@@ -1,0 +1,9 @@
+python
+sql
+fastapi
+machine learning
+data science
+nlp
+docker
+git
+statistics

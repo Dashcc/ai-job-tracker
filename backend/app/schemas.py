@@ -29,3 +29,11 @@ class JobApplicationOut(JobApplicationBase):
 
     class Config:
         from_attributes = True
+
+
+from typing import Optional
+
+class JobApplicationScored(JobApplicationOut):
+    skill_match_score: float
+    deadline_urgency_score: float
+    priority_score: int
