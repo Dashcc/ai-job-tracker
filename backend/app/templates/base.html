@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>{{ title or "AI Job Tracker" }}</title>
+  <style>
+    body { font-family: -apple-system, system-ui, Segoe UI, Roboto, Arial, sans-serif; margin: 24px; }
+    .topbar { display:flex; gap:12px; align-items:center; margin-bottom: 18px; }
+    a { text-decoration:none; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border-bottom: 1px solid #eee; padding: 10px 8px; text-align: left; vertical-align: top; }
+    th { font-size: 12px; color: #555; text-transform: uppercase; letter-spacing: .04em; }
+    .pill { display:inline-block; padding: 2px 8px; border: 1px solid #ddd; border-radius: 999px; font-size: 12px; }
+    .muted { color: #666; font-size: 12px; }
+    .btn { display:inline-block; padding: 8px 12px; border: 1px solid #ddd; border-radius: 10px; }
+    .btn-primary { border-color: #000; }
+    .row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+    .card { border:1px solid #eee; border-radius: 14px; padding: 14px; margin: 12px 0; }
+    input, select, textarea { padding: 8px; border: 1px solid #ddd; border-radius: 10px; width: 100%; }
+    textarea { min-height: 140px; }
+    label { display:block; font-size: 12px; color:#555; margin: 10px 0 6px; }
+    .grid { display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .grid-1 { display:grid; grid-template-columns: 1fr; gap: 12px; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <strong>AI Job Tracker</strong>
+    <a class="btn" href="/">Dashboard</a>
+    <a class="btn btn-primary" href="/new">+ New</a>
+  </div>
+
+  {% block content %}{% endblock %}
+</body>
+</html>

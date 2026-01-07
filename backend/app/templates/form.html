@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>{{ heading }}</h2>
+
+  <form method="post" action="{{ action }}" class="card">
+    <div class="grid">
+      <div>
+        <label>Company *</label>
+        <input name="company" value="{{ app.company if app else '' }}" required />
+      </div>
+      <div>
+        <label>Role *</label>
+        <input name="role" value="{{ app.role if app else '' }}" required />
+      </div>
+    </div>
+
+    <div class="grid">
+      <div>
+        <label>Location</label>
+        <input name="location" value="{{ app.location if app else '' }}" />
+      </div>
+      <div>
+        <label>Job URL</label>
+        <input name="job_url" value="{{ app.job_url if app else '' }}" />
+      </div>
+    </div>
+
+    <div class="grid">
+      <div>
+        <label>Status</label>
+        <select name="status">
+          {% for s in statuses %}
+            <option value="{{ s }}" {% if app and app.status == s %}selected{% endif %}>{{ s }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label>Deadline (YYYY-MM-DD)</label>
+        <input name="deadline" value="{{ app.deadline if app and app.deadline else '' }}" placeholder="2026-02-01" />
+      </div>
+    </div>
+
+    <div class="grid-1">
+      <div>
+        <label>Notes (paste job description here)</label>
+        <textarea name="notes">{{ app.notes if app and app.notes else '' }}</textarea>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top:10px;">
+      <button class="btn btn-primary" type="submit">Save</button>
+      <a class="btn" href="/">Cancel</a>
+    </div>
+  </form>
+{% endblock %}

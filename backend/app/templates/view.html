@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>{{ app.company }} — {{ app.role }}</h2>
+
+  <div class="card">
+    <div class="row">
+      <span class="pill">{{ app.status }}</span>
+      {% if app.deadline %}<span class="pill">Deadline: {{ app.deadline }}</span>{% endif %}
+      {% if app.location %}<span class="pill">{{ app.location }}</span>{% endif %}
+      {% if app.job_url %}<span class="pill"><a href="{{ app.job_url }}" target="_blank">Job link</a></span>{% endif %}
+    </div>
+
+    <h3>Scores</h3>
+    <ul>
+      <li>Skill match: <strong>{{ "%.3f"|format(app.skill_match_score) }}</strong></li>
+      <li>Deadline urgency: <strong>{{ "%.3f"|format(app.deadline_urgency_score) }}</strong></li>
+      <li>Priority score: <strong>{{ app.priority_score }}</strong> / 100</li>
+    </ul>
+
+    <h3>Notes</h3>
+    <pre style="white-space:pre-wrap;">{{ app.notes or "" }}</pre>
+
+    <div class="row" style="margin-top:10px;">
+      <a class="btn" href="/edit/{{ app.id }}">Edit</a>
+      <a class="btn" href="/">Back</a>
+    </div>
+  </div>
+{% endblock %}

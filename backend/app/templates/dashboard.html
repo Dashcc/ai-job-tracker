@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Dashboard</h2>
+
+  <form method="get" action="/" class="card">
+    <div class="row">
+      <div style="min-width:220px;">
+        <label>Status</label>
+        <select name="status">
+          <option value="">All</option>
+          {% for s in statuses %}
+            <option value="{{ s }}" {% if s == status_filter %}selected{% endif %}>{{ s }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div style="min-width:220px;">
+        <label>Sort</label>
+        <select name="sort">
+          <option value="priority" {% if sort_mode=="priority" %}selected{% endif %}>Priority (desc)</option>
+          <option value="deadline" {% if sort_mode=="deadline" %}selected{% endif %}>Deadline (asc)</option>
+          <option value="created" {% if sort_mode=="created" %}selected{% endif %}>Created (desc)</option>
+        </select>
+      </div>
+
+      <div style="margin-top:28px;">
+        <button class="btn btn-primary" type="submit">Apply</button>
+      </div>
+    </div>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Company / Role</th>
+        <th>Status</th>
+        <th>Deadline</th>
+        <th>Priority</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for a in applications %}
+        <tr>
+          <td>
+            <div><strong>{{ a.company }}</strong> — {{ a.role }}</div>
+            {% if a.location %}<div class="muted">{{ a.location }}</div>{% endif %}
+            {% if a.job_url %}<div class="muted"><a href="{{ a.job_url }}" target="_blank">Job link</a></div>{% endif %}
+          </td>
+          <td><span class="pill">{{ a.status }}</span></td>
+          <td>{{ a.deadline or "" }}</td>
+          <td><strong>{{ a.priority_score }}</strong><div class="muted">skill {{ "%.2f"|format(a.skill_match_score) }}, deadline {{ "%.2f"|format(a.deadline_urgency_score) }}</div></td>
+          <td>
+            <a class="btn" href="/view/{{ a.id }}">View</a>
+            <a class="btn" href="/edit/{{ a.id }}">Edit</a>
+            <form method="post" action="/delete/{{ a.id }}" style="display:inline;">
+              <button class="btn" type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% if applications|length == 0 %}
+    <p class="muted">No applications yet. Click “New”.</p>
+  {% endif %}
+{% endblock %}
