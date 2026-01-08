@@ -7,4 +7,5 @@ scikit-learn
 pytest
 jinja2
 python-multipart
+httpx
 
