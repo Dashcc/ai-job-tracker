@@ -40,13 +40,23 @@ def create_application(payload: schemas.JobApplicationCreate, db: Session = Depe
     return crud.create_application(db, payload)
 
 @app.get("/applications", response_model=list[schemas.JobApplicationScored])
-def list_applications(db: Session = Depends(get_db)):
+def list_applications(
+    status: str = "",
+    sort: str = "priority",
+    db: Session = Depends(get_db),
+):
     rows = crud.list_applications(db)
+
+    # filter by status (optional)
+    if status:
+        rows = [r for r in rows if r.status == status]
+
+    # score
     scored = []
     for r in rows:
         s = compute_priority(
             skills_text=SKILLS_TEXT,
-            job_text=r.notes,       # for MVP, use notes as “job text”
+            job_text=r.notes,
             deadline=r.deadline,
         )
         scored.append({
@@ -55,7 +65,19 @@ def list_applications(db: Session = Depends(get_db)):
             "deadline_urgency_score": s.deadline_urgency_score,
             "priority_score": s.priority_score,
         })
+
+    # sort
+    if sort == "deadline":
+        # deadline ascending; None deadlines last
+        scored.sort(key=lambda x: (x["deadline"] is None, x["deadline"]))
+    elif sort == "created":
+        scored.sort(key=lambda x: x["created_at"], reverse=True)
+    else:
+        # default: priority desc
+        scored.sort(key=lambda x: x["priority_score"], reverse=True)
+
     return scored
+
 
 
 @app.get("/applications/{app_id}", response_model=schemas.JobApplicationScored)
